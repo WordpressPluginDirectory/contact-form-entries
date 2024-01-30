@@ -3,8 +3,8 @@ Contributors: crmperks, sbazzi
 Tags: contact form 7, contact form 7 database, Elementor forms database, contact form entries, wpforms database
 Requires at least: 3.8
 Tested up to: 6.4
-Stable tag: 1.3.2
-Version: 1.3.2
+Stable tag: 1.3.3
+Version: 1.3.3
 Requires PHP: 5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -165,6 +165,10 @@ Contact form 7 entries plugin allows you to save contact form 7 entries to local
 
 
 == Changelog ==
+
+= 1.3.3 =
+* fixed "ninja forms hidden fields" issue.
+* fixed "php file type not allowed".
 
 = 1.3.2 =
 * fixed "null to wp_post_kses" issue.
