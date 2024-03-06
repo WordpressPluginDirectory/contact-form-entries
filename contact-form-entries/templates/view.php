@@ -432,7 +432,7 @@ color: #666;
         $fields[$k]=array('name'=>$k,'label'=>str_replace(array('_','-'),' ',$k),'type'=>'text');   
        }   
       }
-  foreach($fields as $field){ //var_dump($field['basetype']); 
+  foreach($fields as $field){ //var_dump($field['type']); 
   
   if(!isset($field['name']) || !empty($field['vx_skip_edit'])){  continue; }
   $field_id=(string)$field['name'];

@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Contact Form Entries
 * Description: Save form submissions to the database from <a href="https://wordpress.org/plugins/contact-form-7/">Contact Form 7</a>, <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms</a>, <a href="https://elementor.com/widgets/form-widget/">Elementor Forms</a> and <a href="https://wordpress.org/plugins/wpforms-lite/">WP Forms</a>.
-* Version: 1.3.3
+* Version: 1.3.4
 * Requires at least: 3.8
 * Tested up to: 6.4
 * Author URI: https://www.crmperks.com
@@ -26,7 +26,7 @@ class vxcf_form {
   public static $type = "vxcf_form";
   public static $path = ''; 
 
-  public static  $version = '1.3.3';
+  public static  $version = '1.3.4';
   public static $upload_folder = 'crm_perks_uploads';
   public static $db_version='';  
   public static $base_url='';  
@@ -263,7 +263,7 @@ vxcf_form::$form_fields=$fields;
   
       $table_id='';
     if(!empty($atts['id'])){
-   $table_id='id="'.esc_attr($atts['font-size']).'"';   
+   $table_id='id="'.esc_attr($atts['id']).'"';   
   }
   //var_dump($fields);
   $limit='20';
@@ -692,7 +692,7 @@ $form_title=$form->title();
 $tags=vxcf_form::get_form_fields('cf_'.$form_id); 
 $post_data=$submission->get_posted_data();
 //var_dump($post_data); die();
- $lead=array();
+ $lead=array(); 
 if(is_array($post_data)){
   foreach($post_data as $k=>$val){
     if(in_array($k,array('vx_width','vx_height','vx_url','g-recaptcha-response'))){ continue; } 
@@ -705,18 +705,20 @@ if(is_array($post_data)){
   $val=$uploaded_files[$name];
    }
 
-   if( !empty($val) && isset($v['basetype']) && $v['basetype'] == 'mfile' && function_exists('dnd_get_upload_dir') ){
+   //disabled it @feb-2024 , dnd plugin now uses correct file urls
+ /*  if( !empty($val) && isset($v['type_']) && $v['type_'] == 'mfile' && function_exists('dnd_get_upload_dir') ){
       $dir=dnd_get_upload_dir(); 
      $f_arr=array();
       foreach($val as $file){
      $file_name=explode('/',$file);
-     if(count($file_name)>1){
+     if(count($file_name)>1){ var_dump($file_name,$file);  
       $f_arr[]=$dir['upload_url'].'/'.$file_name[1];    
      }
       }
-        
+       
    $val=$f_arr;   
-   }  
+   }*/ 
+   
     if(!isset($uploaded_files[$name])){
      $val=wp_unslash($val);   
     }        
@@ -1988,6 +1990,7 @@ if(is_array($tags)){
        $field['label']=ucwords(str_replace(array('-','_')," ",$tag['name']));
        $field['type_']=$tag['type'];
        $field['type']=$tag['basetype'];
+       if($tag['basetype'] == 'mfile'){ $field['type']='file'; }
        $field['req']=strpos($tag['type'],'*') !==false ? 'true' : '';
        
         if($field['type'] == 'select' && !empty($tag['options']) && array_search('multiple',$tag['options'])!== false){

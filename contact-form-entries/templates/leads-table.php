@@ -18,7 +18,7 @@ $upload=vxcf_form::get_upload_dir();
      } 
   $thumb_width='70';  if(!empty($atts['thumb-width'])){ $thumb_width=$atts['thumb-width']; } 
 ?>
- <table <?php echo $class.' '.$css ?> cellspacing="0" <?php echo esc_html($table_id) ?>>
+ <table <?php echo $class.' '.$css ?> cellspacing="0" <?php echo wp_kses_post($table_id) ?>>
   <thead>
   <tr>
   <?php
