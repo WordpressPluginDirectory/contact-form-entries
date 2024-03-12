@@ -370,7 +370,7 @@ if($items>0){
   </div>
   <input type="hidden" class="manage-column hidden" id="<?php echo esc_html($form_id).'-vxvx-vxxx' ?>"> 
 <?php
-  //  var_dump($leads); die();
+    //var_dump($leads); die();
 ?>
   <table class="widefat fixed striped sort" cellspacing="0" id="vx_entries_table">
   
@@ -458,13 +458,31 @@ if(isset($lead['detail'][$field['name'].'_field']) ){
 if(!empty($field['values'])){
  $field_label=vxcf_form::check_option_value($field['values'],$field_label);   
 }
+if(isset($field['type']) && $field['type'] == 'file'){
+        if(!is_array($field_label)){
+     $files_arr=array($field_label);   
+    }else{
+        $files_arr=$field_label;
+    } 
+    if(!empty($files_arr)){
+    $value='';
+foreach($files_arr as $k=>$val){
+$value.=vxcf_form::file_link($val);
+}
+$field_label=$value;
+    }
+
+}else{
 if(is_array($field_label)){
   $field_label=implode(', ',$field_label);  
 }
+$field_label=esc_html($field_label); //esc all fields except file
 if(isset($field['vx_filter'])){
 ///  $field_label=apply_filters('vxcf_entries_plugin_table_field_value',$field_label,$field);  
-} }
-$field_label=esc_html($field_label);
+} 
+}
+}
+
 if(in_array($field['name'],$main_fields)){
     $main_field=ltrim($field['name'],'vx');
 if( in_array($main_field,array('created','updated') ) ){
@@ -477,16 +495,7 @@ if( in_array($main_field,array('url','browser'))){
 } 
 }
 //
-if(isset($field['type']) && $field['type'] == 'file'){
-    if(filter_var($field_label,FILTER_VALIDATE_URL) === false){
-  $field_label=esc_url($upload['url'].$field_label);     
-    } 
-     if(filter_var($field_label,FILTER_VALIDATE_URL)){
-          $file_arr=explode('/',$field_label);
-    $file_name=$file_arr[count($file_arr)-1];
-$field_label='<div><a href="'.esc_url($field_label).'" target="_blank">'.esc_attr($file_name)."</a></div>";
-     }
-}     
+     
 if($f_no == 1){
     if(empty($field_label)){
         $field_label='N/A';

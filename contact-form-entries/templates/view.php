@@ -544,7 +544,7 @@ else if(in_array($type,array('select','multiselect','state','country'))){
 </select>
 <?php
 }
-else if($type == 'file'){
+else if($type == 'file'){ 
     if(!is_array($value)){
      $files_arr=array($value);   
     }else{

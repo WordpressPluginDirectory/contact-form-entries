@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Contact Form Entries
 * Description: Save form submissions to the database from <a href="https://wordpress.org/plugins/contact-form-7/">Contact Form 7</a>, <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms</a>, <a href="https://elementor.com/widgets/form-widget/">Elementor Forms</a> and <a href="https://wordpress.org/plugins/wpforms-lite/">WP Forms</a>.
-* Version: 1.3.4
+* Version: 1.3.5
 * Requires at least: 3.8
 * Tested up to: 6.4
 * Author URI: https://www.crmperks.com
@@ -26,7 +26,7 @@ class vxcf_form {
   public static $type = "vxcf_form";
   public static $path = ''; 
 
-  public static  $version = '1.3.4';
+  public static  $version = '1.3.5';
   public static $upload_folder = 'crm_perks_uploads';
   public static $db_version='';  
   public static $base_url='';  
@@ -706,7 +706,7 @@ if(is_array($post_data)){
    }
 
    //disabled it @feb-2024 , dnd plugin now uses correct file urls
- /*  if( !empty($val) && isset($v['type_']) && $v['type_'] == 'mfile' && function_exists('dnd_get_upload_dir') ){
+   if( !empty($val) && isset($v['type_']) && $v['type_'] == 'mfile' && function_exists('dnd_get_upload_dir') ){
       $dir=dnd_get_upload_dir(); 
      $f_arr=array();
       foreach($val as $file){
@@ -717,7 +717,7 @@ if(is_array($post_data)){
       }
        
    $val=$f_arr;   
-   }*/ 
+   }
    
     if(!isset($uploaded_files[$name])){
      $val=wp_unslash($val);   

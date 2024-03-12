@@ -1154,7 +1154,7 @@ if($tab == 'entries'){
    $fields=vxcf_form::get_form_fields($form_id); 
 
 $detail= $this->data->get_lead_detail($id);
-   }          
+   }        
    //updating meta information
 if(!empty($_POST[vxcf_form::$id.'_submit']) && !empty($_POST['lead'])  && !empty($form_id)){
    
