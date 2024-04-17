@@ -550,12 +550,12 @@ else if($type == 'file'){
     }else{
         $files_arr=$value;
     } 
-    $value='';
+    $value=''; 
 foreach($files_arr as $k=>$val){
 $value.=$file_value=vxcf_form::file_link($val);
     ?>
 <div class="vx_file_single">
-<?php echo wp_kses_post($file_value); ?>  
+<?php echo esc_url($file_value); ?>  
   <div>
   <input type="hidden" name="files_<?php echo esc_html($f_name.'['.$k.']') ?>" value="<?php echo esc_html($val) ?>" />
   <input type="file" id="vx_<?php echo esc_html($field['name']); ?>" <?php echo esc_html($req) ?> class="vx_input" name="<?php echo esc_html($f_name).'[]' ?>" autocomplete="off">

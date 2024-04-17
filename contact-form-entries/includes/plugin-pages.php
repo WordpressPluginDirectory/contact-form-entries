@@ -1152,7 +1152,7 @@ if($tab == 'entries'){
    $form_id=$form_key.'_'.$form_i;   
   }     
    $fields=vxcf_form::get_form_fields($form_id); 
-
+//var_dump($fields);
 $detail= $this->data->get_lead_detail($id);
    }        
    //updating meta information
