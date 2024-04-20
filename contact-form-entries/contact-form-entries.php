@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Contact Form Entries
 * Description: Save form submissions to the database from <a href="https://wordpress.org/plugins/contact-form-7/">Contact Form 7</a>, <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms</a>, <a href="https://elementor.com/widgets/form-widget/">Elementor Forms</a> and <a href="https://wordpress.org/plugins/wpforms-lite/">WP Forms</a>.
-* Version: 1.3.8
+* Version: 1.3.9
 * Requires at least: 3.8
 * Tested up to: 6.5
 * Author URI: https://www.crmperks.com
@@ -26,7 +26,7 @@ class vxcf_form {
   public static $type = "vxcf_form";
   public static $path = ''; 
 
-  public static  $version = '1.3.8';
+  public static  $version = '1.3.9';
   public static $upload_folder = 'crm_perks_uploads';
   public static $db_version='';  
   public static $base_url='';  
@@ -718,7 +718,7 @@ if(is_array($post_data)){
        
    $val=$f_arr;   
    }*/
-if( !empty($val) && is_array($val) && isset($v['type_']) && $v['type_'] == 'mfile'){ //escape wpcf7-files/testt'"><img src=x onerror=alert(1).jpg
+if( !empty($val) && is_array($val) && isset($v['type_']) && $v['type_'] == 'mfilea'){ //escape wpcf7-files/testt'"><img src=x onerror=alert(1).jpg
    $temp_val=array();
     foreach($val as $kk=>$vv){
      $temp_val[$kk]=sanitize_url($vv);   
@@ -1431,12 +1431,12 @@ $upload=vxcf_form::get_upload_dir();
     $base_url=$upload['url'];
             }   
   $file_url=$base_url.$file_url;     
-    } 
+    }  
      if(filter_var($file_url,FILTER_VALIDATE_URL)){
           $file_arr=explode('/',$file_url);
     $file_name=$file_arr[count($file_arr)-1];
-$file_url="<div><a href='$file_url' target='_blank'>".$file_name."</a></div>";
-     }
+$file_url='<div><a href="'.esc_url($file_url).'" target="_blank">'.esc_html($file_name)."</a></div>";
+     } 
      return $file_url;
 }
 public function get_ip(){

@@ -430,7 +430,7 @@ $total_cols=2; $n=0;
  
   if(is_array($leads) && !empty($leads)){
   $sno=0;
-      foreach($leads as $lead){
+      foreach($leads as $lead){ 
   $sno++;
   ?>
   <tr class='<?php echo 'vx_lead_'.$lead['type']; if($lead['is_read'] == 0){echo ' vx_lead_unread';}  if($lead['type'] == '1'){echo '  vx_';} ?>' id="tr_<?php echo esc_html($lead['id'])  ?>" data-id="<?php echo esc_html($lead['id']) ?>" >
@@ -459,17 +459,22 @@ if(!empty($field['values'])){
  $field_label=vxcf_form::check_option_value($field['values'],$field_label);   
 }
 if(isset($field['type']) && $field['type'] == 'file'){
+    $files_arr=array();
+    if(!empty($field_label)){
         if(!is_array($field_label)){
      $files_arr=array($field_label);   
     }else{
         $files_arr=$field_label;
     } 
+    }
+
     if(!empty($files_arr)){
     $value='';
 foreach($files_arr as $k=>$val){
-$value.=vxcf_form::file_link($val);
+$value.=vxcf_form::file_link(esc_url($val));
 }
 $field_label=$value;
+
     }
 
 }else{
