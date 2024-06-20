@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Contact Form Entries
 * Description: Save form submissions to the database from <a href="https://wordpress.org/plugins/contact-form-7/">Contact Form 7</a>, <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms</a>, <a href="https://elementor.com/widgets/form-widget/">Elementor Forms</a> and <a href="https://wordpress.org/plugins/wpforms-lite/">WP Forms</a>.
-* Version: 1.3.9
+* Version: 1.4.0
 * Requires at least: 3.8
 * Tested up to: 6.5
 * Author URI: https://www.crmperks.com
@@ -26,7 +26,7 @@ class vxcf_form {
   public static $type = "vxcf_form";
   public static $path = ''; 
 
-  public static  $version = '1.3.9';
+  public static  $version = '1.4.0';
   public static $upload_folder = 'crm_perks_uploads';
   public static $db_version='';  
   public static $base_url='';  
@@ -55,7 +55,7 @@ class vxcf_form {
   public static $meta = null;    
 
 public function instance(){
-
+ 
 add_action( 'plugins_loaded', array( $this, 'setup_main' ) );
 register_deactivation_hook(__FILE__,array($this,'deactivate'));
 register_activation_hook(__FILE__,(array($this,'activate')));
@@ -120,6 +120,10 @@ public  function setup_main(){
 // add_filter('si_contact_email_fields_posted', array($this, 'test'),10,2);
 //elemntor form
  add_action( 'elementor_pro/forms/new_record', array($this,'create_entry_el'), 10 );
+// add_action( 'forminator_form_after_handle_submit', array($this,'create_entry_fr'), 10,2 );
+// add_action( 'forminator_form_after_save_entry', array($this,'create_entry_fr'), 10,2 );
+ //add_filter( 'forminator_form_submit_response', array($this,'create_entry_fr'), 10,2 );
+
 // add_action('wpcf7_submit', array($this, 'submit'),10, 2);
 //add_action('wpcf7_init', array($this, 'create_entry'));
 //$this->create_entry();
@@ -718,6 +722,53 @@ if(is_array($post_data)){
        
    $val=$f_arr;   
    }*/
+if( !empty($val) && is_array($val) && isset($v['type_']) && $v['type_'] == 'mfilea'){ //escape wpcf7-files/testt'"><img src=x onerror=alert(1).jpg
+   $temp_val=array();
+    foreach($val as $kk=>$vv){
+     $temp_val[$kk]=sanitize_url($vv);   
+    }
+$val=$temp_val;
+}
+    if(!isset($uploaded_files[$name])){
+     $val=wp_unslash($val);   
+    }        
+  $lead[$k]=$val;          
+  }  
+}
+//var_dump($lead,$post_data); die('-----------');
+
+$form_arr=array('id'=>$form_id,'name'=>$form_title,'fields'=>$tags);
+$this->create_entry($lead,$form_arr,'cf','',$track);
+
+}
+public function create_entry_fr($res,$id){ 
+    var_dump($res,$id); die();
+$form_id=$form->id();
+$track=$this->track_form_entry('cf',$form_id);
+
+$submission = WPCF7_Submission::get_instance();      
+$uploaded_files = $submission->uploaded_files();
+
+if($track){
+$uploaded_files=$this->copy_files($uploaded_files);
+}
+$form_title=$form->title();
+$tags=vxcf_form::get_form_fields('cf_'.$form_id); 
+$post_data=$submission->get_posted_data();
+//var_dump($post_data); die();
+ $lead=array(); 
+if(is_array($post_data)){
+  foreach($post_data as $k=>$val){
+    if(in_array($k,array('vx_width','vx_height','vx_url','g-recaptcha-response'))){ continue; } 
+       if(isset($tags[$k])){
+          $v=$tags[$k];  //$v is empty for non form fields 
+      }
+     $name=$k;  //$v['name'] //if empty then $v is old
+//var_dump($v);
+ if(isset($uploaded_files[$name])){
+  $val=$uploaded_files[$name];
+   }
+
 if( !empty($val) && is_array($val) && isset($v['type_']) && $v['type_'] == 'mfilea'){ //escape wpcf7-files/testt'"><img src=x onerror=alert(1).jpg
    $temp_val=array();
     foreach($val as $kk=>$vv){
@@ -1430,8 +1481,9 @@ public static function file_link($file_url,$base_url=''){
 $upload=vxcf_form::get_upload_dir();
     $base_url=$upload['url'];
             }   
-  $file_url=$base_url.$file_url;     
+  $file_url=esc_url($base_url.$file_url);     
     }  
+
      if(filter_var($file_url,FILTER_VALIDATE_URL)){
           $file_arr=explode('/',$file_url);
     $file_name=$file_arr[count($file_arr)-1];

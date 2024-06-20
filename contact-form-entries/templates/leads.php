@@ -471,12 +471,11 @@ if(isset($field['type']) && $field['type'] == 'file'){
     if(!empty($files_arr)){
     $value='';
 foreach($files_arr as $k=>$val){
-$value.=vxcf_form::file_link(esc_url($val));
+$value.=vxcf_form::file_link($val);
 }
 $field_label=$value;
 
     }
-
 }else{
 if(is_array($field_label)){
   $field_label=implode(', ',$field_label);  
