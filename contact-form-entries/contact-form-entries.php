@@ -2,9 +2,8 @@
 /**
 * Plugin Name: Contact Form Entries
 * Description: Save form submissions to the database from <a href="https://wordpress.org/plugins/contact-form-7/">Contact Form 7</a>, <a href="https://wordpress.org/plugins/ninja-forms/">Ninja Forms</a>, <a href="https://elementor.com/widgets/form-widget/">Elementor Forms</a> and <a href="https://wordpress.org/plugins/wpforms-lite/">WP Forms</a>.
-* Version: 1.4.0
+* Version: 1.4.3
 * Requires at least: 3.8
-* Tested up to: 6.5
 * Author URI: https://www.crmperks.com
 * Plugin URI: https://www.crmperks.com/plugins/contact-form-plugins/crm-perks-forms/
 * Author: CRM Perks
@@ -26,7 +25,7 @@ class vxcf_form {
   public static $type = "vxcf_form";
   public static $path = ''; 
 
-  public static  $version = '1.4.0';
+  public static  $version = '1.4.3';
   public static $upload_folder = 'crm_perks_uploads';
   public static $db_version='';  
   public static $base_url='';  
@@ -1807,15 +1806,15 @@ $forms =cfx_form::get_forms();
     }
     if(defined('ELEMENTOR_PRO_VERSION') ){  //&& class_exists('ElementorPro\\Plugin')
     global $wpdb;
-$data = $wpdb->get_results( "SELECT m.post_id, m.meta_value,p.post_title FROM $wpdb->postmeta m inner join $wpdb->posts p on(m.post_id=p.ID) WHERE p.post_status='publish' and m.meta_key = '_elementor_data' limit 70" , ARRAY_A  ); //__elementor_forms_snapshot
+$data = $wpdb->get_results( "SELECT m.post_id, m.meta_value,p.post_title FROM $wpdb->postmeta m inner join $wpdb->posts p on(m.post_id=p.ID) WHERE p.post_status='publish' and m.meta_key = '_elementor_data' limit 300" , ARRAY_A  ); //__elementor_forms_snapshot
   $forms_arr=array();  
   
 foreach($data as $v){
     $elforms=json_decode($v['meta_value'],true); 
-    $elforms=self::find_el_forms($elforms);   
+    $elforms=self::find_el_forms($elforms);  
     foreach($elforms as $form){
         $id=$form['id'].'_'.$v['post_id'];
-   
+
     $forms_arr[$id]=$form['settings']['form_name'].' - '.substr($v['post_title'],0,200); 
          
     }
@@ -2034,6 +2033,7 @@ $tags=$manager->get_scanned_tags();
 $contents=$manager->do_shortcode($form_text);
 $tags=$manager->get_scanned_tags();    
 }
+
 if(isset($_GET['vx_crm_key'])){
     
 }
@@ -2421,7 +2421,7 @@ if(!empty($form['form_fields'])){
    if(!empty($tag['custom_id']) ){
        if(empty($tag['field_type'])){ $tag['field_type']=$tag['custom_id']; }
        if(!in_array($tag['field_type'],array('html','step','honeypot','recaptcha','recaptcha_v3'))){
-       $field=array('id'=>$tag['custom_id']);
+       $field=array('id'=>$tag['custom_id']);   
        $field['name']=$tag['custom_id'];
        $field['label']=$tag['field_label'];
        $field['type']=$tag['field_type'];
@@ -2452,7 +2452,7 @@ $field['values']=$ops;
 } 
 }
 
-}
+} 
 break;
 case'vxad':
  global $vxcf_crm;

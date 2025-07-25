@@ -117,14 +117,14 @@ public function update_lead($update,$insert,$lead_id='',$lead=array()){
 
    if(!empty($update) && !empty($lead_id) ){
        foreach($update as $k=>$v){
- $v=is_array($v) ? serialize($v) : $v;
+ $v=is_array($v) ? json_encode($v) : $v;
  $wpdb->update($detail,array('value'=>$v),array('id'=>$k,'lead_id'=>$lead_id));  
        }
    }
 
    if(!empty($insert) && !empty($lead_id)){
        foreach($insert as $k=>$v){
-           $v=is_array($v) ? serialize($v) : $v;
+           $v=is_array($v) ? json_encode($v) : $v;
            $arr=array('lead_id'=>$lead_id,'name'=>$k,'value'=>$v);
         $wpdb->insert($detail,$arr);   
        }
@@ -383,6 +383,11 @@ if(isset($_GET['form_id'])){
 if(!empty($res)){
     foreach($res as $v){
    if(!empty($v['lead_id']) && !empty($leads[$v['lead_id']])){
+  foreach($v as $kk=>$vv){
+      if(!empty($vv)){  
+         $v[$kk]= $this->verify_val($vv);
+      }     
+  }  
    $leads[$v['lead_id']]['detail']=$v;    
    }     
     }
@@ -521,10 +526,28 @@ public function get_lead_detail($lead_id){
   $detail=array();
 if(is_array($detail_arr)){
   foreach($detail_arr as $v){
+      if(!empty($v['value'])){  
+         $v['value']= $this->verify_val($v['value']);
+      }
  $detail[$v['name']]=$v;     
   }  
 }
 return $detail;
+}
+
+public function verify_val($string){
+       if(in_array(substr(ltrim($string),0,1),array('{','[')) && in_array(substr( rtrim($string), -1 ),array('}',']') )){
+       $val=json_decode($string,1);  
+       if(is_array($val)){
+        $string=$val;   
+       }
+   }else if(is_serialized($string)){
+    $string=maybe_unserialize($string);  
+   } 
+ return $string;  
+}
+public function is_json($string){
+    return preg_match('/^(\{|\[).*(\}|\])$/', trim($string)) === 1;
 }
 public function search_lead_detail($value,$form_id,$entry_id=''){
           global $wpdb;
