@@ -81,7 +81,7 @@ $field['type']='thumb';
 }
 $field_label='';
 if(isset($lead['detail'][$field_name])){
- $field_label=maybe_unserialize($lead['detail'][$field_name]);   
+ $field_label=vxcf_form::maybe_unserialize($lead['detail'][$field_name],$lead);   
 
  }
 if($field['name'] == 'created' && !empty($lead['created'])){

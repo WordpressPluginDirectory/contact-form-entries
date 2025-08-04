@@ -292,7 +292,7 @@ function toggle(){
 </div>
 <div class="vx_contents">
   <?php
-       foreach($leads as $id=>$lead){  
+       foreach($leads as $id=>$lead){   
      $notes=$detail=array();
      if(isset($lead['lead'])){
     $detail=$lead['lead'];     
@@ -313,7 +313,7 @@ function toggle(){
       $lead_field=isset($detail[$field['name']]) ? $detail[$field['name']] : '';
       $value='';
       if(!empty($lead_field['value'])){
-         $value=maybe_unserialize($lead_field['value']);
+          $value=vxcf_form::maybe_unserialize($lead_field['value']);
 if(!empty($field['values'])){
  $value=vxcf_form::check_option_value($field['values'],$value);   
 }
@@ -338,7 +338,7 @@ if(!empty($field['values'])){
 }else if(filter_var($value, FILTER_VALIDATE_EMAIL)){
 ?><a href="mailto:<?php echo esc_html($value) ?>"><?php echo esc_html($value) ?></a><?php 
 }else{
-  echo $value;  
+  echo esc_html($value);  
 }
 
  ?>

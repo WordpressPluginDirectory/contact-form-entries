@@ -426,7 +426,6 @@ color: #666;
 <?php 
   $emails=array(); $date_field=''; 
   if(is_array($detail) && is_array($fields)){
-     
       foreach($detail as $k=>$v){
        if(!isset($fields[$k])){
         $fields[$k]=array('name'=>$k,'label'=>str_replace(array('_','-'),' ',$k),'type'=>'text');   
@@ -438,9 +437,9 @@ color: #666;
   $field_id=(string)$field['name'];
 $date_class='';
       $lead_field=isset($detail[$field_id]) ? $detail[$field_id] : '';
-      $value='';
-      if(isset($lead_field['value'])){
-         $value=maybe_unserialize($lead_field['value']);
+      $value=$lead_field['value'];
+      if( !empty($value)){
+         $value=vxcf_form::maybe_unserialize($value,$lead);
       } 
   
      if (!filter_var($value, FILTER_VALIDATE_EMAIL) === false) {

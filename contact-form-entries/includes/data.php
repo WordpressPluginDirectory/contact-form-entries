@@ -522,7 +522,6 @@ public function get_lead_detail($lead_id){
     $detail_table = $this->get_crm_table_name('detail');
    $sql=$wpdb->prepare("Select * from {$detail_table} where lead_id=%d",$lead_id);
   $detail_arr=$wpdb->get_results($sql,ARRAY_A);
- 
   $detail=array();
 if(is_array($detail_arr)){
   foreach($detail_arr as $v){
@@ -541,9 +540,10 @@ public function verify_val($string){
        if(is_array($val)){
         $string=$val;   
        }
-   }else if(is_serialized($string)){
+   }
+   /*else if(is_serialized($string)){
     $string=maybe_unserialize($string);  
-   } 
+   } */
  return $string;  
 }
 public function is_json($string){

@@ -452,9 +452,9 @@ if(empty($field['vx_sticky_field'])){
   $f_no++;   
 }
 
-$field_label='';
+$field_label=''; 
 if(isset($lead['detail'][$field['name'].'_field']) ){
- $field_label=maybe_unserialize($lead['detail'][$field['name'].'_field']);   
+ $field_label=vxcf_form::maybe_unserialize($lead['detail'][$field['name'].'_field'],$lead);   
 if(!empty($field['values'])){
  $field_label=vxcf_form::check_option_value($field['values'],$field_label);   
 }
