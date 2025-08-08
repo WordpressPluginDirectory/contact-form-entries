@@ -437,7 +437,7 @@ color: #666;
   $field_id=(string)$field['name'];
 $date_class='';
       $lead_field=isset($detail[$field_id]) ? $detail[$field_id] : '';
-      $value=$lead_field['value'];
+      $value=is_array($lead_field) && isset($lead_field['value']) ? $lead_field['value'] : '';
       if( !empty($value)){
          $value=vxcf_form::maybe_unserialize($value,$lead);
       } 
